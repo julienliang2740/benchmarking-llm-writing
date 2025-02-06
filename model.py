@@ -27,10 +27,15 @@ class Metric(BaseModel):
 class Grading_Metrics(BaseModel):
     metrics: list[Metric]
 
-class Grading(BaseModel):
-    grade: int
+class Metric_Grade(BaseModel):
+    metric: str
+    metric_grade: int
 
-def run_gpt(system_prompt, user_prompt, response_format_class, model="gpt-4o-mini", temperature= 0.0) -> str:
+class All_Grades(BaseModel):
+    grades: list[Metric_Grade]
+    
+
+def run_gpt_structured_output(system_prompt, user_prompt, response_format_class, model="gpt-4o-mini", temperature= 0.0) -> str:
     completion = client.beta.chat.completions.parse(
         model=model,
         messages=[
@@ -52,7 +57,7 @@ if __name__ == '__main__':
     # user_prompt = "whats 9 plus ten"
     # response_format_class = Grading
 
-    # monke = run_gpt(system_prompt, user_prompt, response_format_class)
+    # monke = run_gpt_structured_output(system_prompt, user_prompt, response_format_class)
 
     # print(type(monke))
     # print(monke)
@@ -67,7 +72,7 @@ if __name__ == '__main__':
     user_prompt = "History Essay"
     response_format_class = Grading_Metrics
 
-    monke = run_gpt(system_prompt, user_prompt, response_format_class)
+    monke = run_gpt_structured_output(system_prompt, user_prompt, response_format_class)
 
     print(type(monke))
     print(monke)
