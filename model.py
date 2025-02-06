@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+import getpass
 
 from pydantic import BaseModel
 from openai import OpenAI
@@ -9,9 +10,6 @@ if not os.environ.get("OPENAI_API_KEY"):
     os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
 
 client = OpenAI()
-
-
-
 
 
 # class Step(BaseModel):
