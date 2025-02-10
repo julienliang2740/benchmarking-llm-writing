@@ -1,4 +1,2 @@
-task,original_prompt,dspy_only,dspy_and_task_system,files
-monketask,./documents/guide.txt,./documents/guide.txt,./documents/guide.txt,[]
-monketask,./documents/guide.txt,./documents/guide.txt,./documents/guide.txt,[]
-monketask,./documents/guide.txt,./documents/guide.txt,./documents/guide.txt,[]
+task,sample1,sample2,sample3,files
+example task,./documents/guide.txt,./documents/guide.txt,./documents/guide.txt,[]
