@@ -1,4 +1,5 @@
 # benchmarking-llm-writing
+A tool to compare different text outputs for a task meant especially for benchmarking LLM writing capabilities.
 
 ## Usage
 Clone repo and make the necessary directories
@@ -37,3 +38,5 @@ To get a grades csv file just run main.py:
 ```
 python main.py
 ```
+
+The results should appear in a file with the same name as grades_csv_file.
