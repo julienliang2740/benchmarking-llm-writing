@@ -13,7 +13,7 @@ number_of_runs = 1
 # model to use for evaluation
 model = "gpt-4o-mini"
 # csv file with the task names and task output file paths
-task_outputs_csv_file = "monke.csv"
+task_outputs_csv_file = "task_outputs.csv"
 # csv file with the grades for the task outputs of each task
 grades_csv_file = "grades.csv"
 
