@@ -1,4 +1,4 @@
-from grading_system import GradingSystem, load_pages
+from grading_system import JudgeAgent, load_pages
 import csv
 import ast
 import os
@@ -8,16 +8,16 @@ from pypdf import PdfReader
 
 # note: task outputs must be pdf documents
 
-# number of times to evaluate each task output
+# number of times each Judge Agent evaluates each task output
 number_of_runs = 1
-# model to use for evaluation
-model = "gpt-4o-mini"
+# models to use for evaluation -> each model becomes a judge agent
+models = ["gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18"]
+# models = ["gpt-4o-mini"]
+
 # csv file with the task names and task output file paths
-task_outputs_csv_file = "task_outputs.csv"
+task_outputs_csv_file = "monke.csv"
 # csv file with the grades for the task outputs of each task
 grades_csv_file = "grades.csv"
-
-
 
 def return_text_from_pdf(filepath):
     # creating a pdf reader object
@@ -29,8 +29,9 @@ def return_text_from_pdf(filepath):
 
     return final_output
 
+# Builds the individual LLM Judge Agent (aka Councl Member) and returns its result
 def judge_task(original_prompt: str, file_paths: list[str], task_outputs: dict[str,str], model: str) -> dict[str, list[int]]:
-    judge = GradingSystem(original_prompt, file_paths, model)
+    judge = JudgeAgent(original_prompt, file_paths, model)
     
     results = {}
     for sample_type, output in task_outputs.items():
@@ -40,6 +41,22 @@ def judge_task(original_prompt: str, file_paths: list[str], task_outputs: dict[s
 
     return results
 
+# Averages out the results of the judge_task(...) calls of the Judge Agents
+# Input looks like: [{'sample1': 84.6, 'sample2': 77.5, 'sample3': 86.8}, ...]
+def average_out_judges_verdicts(list_results: list[dict[str, list[int]]]) -> list[dict[str, list[int]]]:
+    final_results = {}
+    n = len(list_results)
+    for result in list_results:
+        for k,v in result.items():
+            if k not in final_results.keys():
+                final_results[k] = (v/n)
+            else:
+                final_results[k] += (v/n)
+
+    return final_results
+
+# Handles reading and preparing the files
+# Builds all the LLM Judge Agents and runs the Council for judging
 def run(task_outputs_csv_file, grades_csv_file):
     # Check if the grades CSV file already exists
     file_exists = os.path.exists(grades_csv_file)
@@ -77,15 +94,23 @@ def run(task_outputs_csv_file, grades_csv_file):
                     text_content = return_text_from_pdf(val)
                     task_outputs[key] = text_content
                 
+                ##### MAKE THE LLM COUNCIL #####
                 # Call judge_task to obtain results (assumed to be a dict)
-                results = judge_task(task_prompt, reference_file_paths, task_outputs, model)
-                print(f"{task_prompt}:\n{results}")
+                results = []
+                for model in models:
+                    result_per_judge = judge_task(task_prompt, reference_file_paths, task_outputs, model)
+                    results.append(result_per_judge)
+                    print(f"Results (judge - {model}):")
+                    print(result_per_judge)
+
+                final_results = average_out_judges_verdicts(results)
+                print(f"{task_prompt}:\n{final_results}")
                 
                 # Add the task name to the results so it gets written into the grades CSV
-                results["task"] = task_prompt
+                final_results["task"] = task_prompt
                 
                 # Write the results as a new row in the grades CSV file
-                writer.writerow(results)
+                writer.writerow(final_results)
     
     print(f"Grading written to {grades_csv_file}")
 

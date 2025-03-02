@@ -14,10 +14,10 @@ Put the writing outputs (must be in PDF format) in the documents folder.
 
 In main.py, change the configurations as desired:
 ```
-# number of times to evaluate each task output
+# number of times each Judge Agent evaluates each task output
 number_of_runs = 1
-# model to use for evaluation
-model = "gpt-4o-mini"
+# models to use for evaluation -> each model becomes a judge agent (note which models your api key has access to!)
+models = ["o3-mini", "gpt-4o", "gpt-4o-mini"]
 # csv file with the task names and task output file paths
 task_outputs_csv_file = "task_outputs.csv"
 # csv file with the grades for the task outputs of each task

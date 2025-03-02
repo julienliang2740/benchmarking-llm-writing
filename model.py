@@ -13,10 +13,11 @@ if not os.environ.get("OPENAI_API_KEY"):
 
 # Setup logging
 logger = setup_logger("model_input_output")
-def do_logging(func, prompt, output):
+def do_logging(func, model_name, prompt, output):
     logger.info("\n"*6)
 
     logger.info(func.__name__)
+    logger.info(model_name)
     logger.info("="*90)
     logger.info("PROMPT" + "="*84)
     logger.info("="*90)
@@ -61,11 +62,8 @@ def run_gpt_structured_output(system_prompt, user_prompt, response_format_class,
     )
     return_value = completion.choices[0].message.parsed
     
-    do_logging(run_gpt_structured_output, f"******SYSTEM PROMPT******\n{system_prompt}\n\n\n******USER PROMPT******\n{user_prompt}\n\n\n", return_value)
+    do_logging(run_gpt_structured_output, model, f"******SYSTEM PROMPT******\n{system_prompt}\n\n\n******USER PROMPT******\n{user_prompt}\n\n\n", return_value)
     return return_value
-
-
-
 
 
 if __name__ == '__main__':

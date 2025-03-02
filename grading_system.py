@@ -13,7 +13,7 @@ async def load_pages(loader):
         pages.append(page)
     return pages
 
-class GradingSystem:
+class JudgeAgent:
     def __init__(self, original_prompt, file_paths, model):
         self.original_prompt = original_prompt
         self.file_paths = file_paths
@@ -105,4 +105,4 @@ class GradingSystem:
 if __name__ == '__main__':
     original_prompt = "write a report on the fall of the Ming Dynasty"
 
-    mysys = GradingSystem(original_prompt, [])
+    mysys = JudgeAgent(original_prompt, [])
