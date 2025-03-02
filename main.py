@@ -11,7 +11,7 @@ from pypdf import PdfReader
 # number of times each Judge Agent evaluates each task output
 number_of_runs = 1
 # models to use for evaluation -> each model becomes a judge agent
-models = ["gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18"]
+models = ["o3-mini", "gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18"]
 # models = ["gpt-4o-mini"]
 
 # csv file with the task names and task output file paths
