@@ -15,7 +15,7 @@ models = ["gpt-4o-2024-08-06", "gpt-4o-mini-2024-07-18"]
 # models = ["gpt-4o-mini"]
 
 # csv file with the task names and task output file paths
-task_outputs_csv_file = "monke.csv"
+task_outputs_csv_file = "task_outputs.csv"
 # csv file with the grades for the task outputs of each task
 grades_csv_file = "grades.csv"
 
